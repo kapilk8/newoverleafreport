@@ -1,0 +1,138 @@
+\chapter{System Testing}
+\section{Introduction}
+\paragraph{}Software testing is the systematic process of evaluating a system to verify that it behaves correctly and meets its specified requirements. For SMPTMS, testing was conducted across three levels --- unit, integration, and full system --- to validate every component before the platform was made available for live use. The primary testing tool was Postman for API-level testing, supplemented by manual browser-based testing for UI workflows and Razorpay's sandbox environment for payment validation.
+
+\section{Types of Testing Performed}
+\subsection{Unit Testing}
+\paragraph{}Each module was tested independently before integration. The tax calculation engine was tested by running a range of input combinations --- varying plot sizes, zone categories, and DLC rates --- through the formula and verifying computed outputs against manual calculations. The authentication module was tested by attempting valid and invalid login credentials, checking session expiry behaviour, and validating role switching between citizen and admin accounts. Each API endpoint was tested in isolation using Postman to confirm correct status codes, response payloads, and error handling.
+
+\subsection{Integration Testing}
+\paragraph{}Integration testing focused on verifying correct data flow between modules. Key integration test scenarios included confirming that a property registered by a citizen appeared immediately on the admin GIS map with the correct zone and status, verifying that a completed Razorpay payment updated the property record in Supabase in real time via the webhook, and ensuring that the receipt generation function correctly pulled transaction details from the payment record. Cross-module interactions between the user management, tax calculation, and payment modules were validated in this phase.
+
+\subsection{System Testing}
+\paragraph{}Full end-to-end testing was performed on the live Vercel deployment. Test scenarios covered the complete citizen workflow: account registration, property submission, tax calculation review, Razorpay sandbox payment completion, and receipt download. Admin workflows were also tested: logging in to the admin panel, viewing the GIS property map, filtering by zone and payment status, accessing the defaulter list, and generating zone-wise reports. All tests were repeated after bug fixes to confirm resolution.
+
+\section{Test Cases}
+\begin{table}[H]
+\begin{center}
+ \begin{tabular}{| m{1.2cm} | m{3.5cm} | m{2.2cm}| m{3cm}|m{3cm}| } 
+\hline
+\multicolumn{3}{|l|}{NAME OF MODULE: User Management}&
+\multicolumn{2}{|l|}{TESTING TOOL: Postman + Manual Browser}\\[0.8cm]
+\hline
+\textbf{Test ID} & \textbf{Test Description} & \textbf{Input Data} & \textbf{Expected Output} & \textbf{Actual Output} \\ 
+\hline
+TC-UM-01 & Valid user registration & Name: Kapil Jarwal, Email: kapil@gmail.com, Pass: Test@123 & Account created, redirect to dashboard & Account created successfully \\
+\hline
+TC-UM-02 & Login with correct credentials & Email: kapil@gmail.com, Pass: Test@123 & Dashboard loads with user data & Dashboard loaded correctly \\
+\hline
+TC-UM-03 & Login with wrong password & Email: kapil@gmail.com, Pass: wrong123 & Error -- Invalid credentials & Error displayed correctly \\
+\hline
+TC-UM-04 & Login with unregistered email & Email: fake@test.com, Pass: Test@123 & Error -- User not found & Error displayed correctly \\
+\hline
+TC-UM-05 & Access dashboard without login & Direct URL: /dashboard & Redirected to /login & Redirected correctly \\
+\hline
+TC-UM-06 & Admin login with citizen credentials & Citizen credentials on admin panel & Access denied, role mismatch & Access correctly blocked \\
+\hline
+TC-UM-07 & Session timeout check & User idle for extended period & Auto logout, redirect to login & Session expired correctly \\
+\hline
+TC-UM-08 & Duplicate email registration & Same email registered twice & Error -- Email already exists & Duplicate blocked correctly \\
+\hline
+\end{tabular}
+\caption{Test Cases -- User Management Module}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+ \begin{tabular}{| m{1.2cm} | m{3.5cm} | m{2.2cm}| m{3cm}|m{3cm}| } 
+\hline
+\multicolumn{3}{|l|}{NAME OF MODULE: Tax Calculation}&
+\multicolumn{2}{|l|}{TESTING TOOL: Postman + Manual Verification}\\[0.8cm]
+\hline
+\textbf{Test ID} & \textbf{Test Description} & \textbf{Input Data} & \textbf{Expected Output} & \textbf{Actual Output} \\ 
+\hline
+TC-TC-01 & Basic tax calculation -- Zone C residential & Area: 280 sq.m, Zone C, Residential & Tax = (280 x DLC Rate) / 2000 & Correct amount calculated \\
+\hline
+TC-TC-02 & Tax calculation -- Zone A commercial & Area: 520 sq.m, Zone A, Commercial & Higher tax due to Zone A DLC rate & Correct amount calculated \\
+\hline
+TC-TC-03 & Minimum plot size & Area: 50 sq.m, Zone B, Residential & Low tax as per formula & Calculated correctly \\
+\hline
+TC-TC-04 & Large commercial plot & Area: 2000 sq.m, Zone A, Commercial & Large tax verified manually & Matched manual calculation \\
+\hline
+TC-TC-05 & Zero area input validation & Area: 0, Zone C & Error -- Invalid plot area & Validation error shown \\
+\hline
+TC-TC-06 & Negative area input & Area: -100 & Error -- Area cannot be negative & Validation blocked input \\
+\hline
+TC-TC-07 & DLC rate change effect & Admin updates Zone B DLC rate & New rate applied to Zone B properties & Rate updated correctly \\
+\hline
+TC-TC-08 & Multiple properties total dues & 2 properties in dashboard & Correct total dues displayed & Correct total displayed \\
+\hline
+\end{tabular}
+\caption{Test Cases -- Tax Calculation Module}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+ \begin{tabular}{| m{1.2cm} | m{3.5cm} | m{2.2cm}| m{3cm}|m{3cm}| } 
+\hline
+\multicolumn{3}{|l|}{NAME OF MODULE: Payment and Receipt}&
+\multicolumn{2}{|l|}{TESTING TOOL: Postman + Razorpay Sandbox}\\[0.8cm]
+\hline
+\textbf{Test ID} & \textbf{Test Description} & \textbf{Input Data} & \textbf{Expected Output} & \textbf{Actual Output} \\ 
+\hline
+TC-PM-01 & Successful payment -- test mode & Razorpay test card, Amount: Rs.1434 & Payment success, status updated to Paid & Payment processed correctly \\
+\hline
+TC-PM-02 & Payment cancelled by user & User cancels Razorpay popup midway & Payment status remains Pending & Status unchanged correctly \\
+\hline
+TC-PM-03 & Invalid card details & Card: 0000 0000 0000 0000 & Payment failed, Razorpay error & Failure handled correctly \\
+\hline
+TC-PM-04 & Receipt generation after payment & Completed payment transaction ID & Downloadable PDF receipt generated & Receipt generated correctly \\
+\hline
+TC-PM-05 & Payment webhook verification & Razorpay sends signed callback & Backend verifies signature, updates DB & Signature verified correctly \\
+\hline
+TC-PM-06 & Double payment attempt & Pay again on already-paid property & Warning -- Tax already paid & Blocked correctly \\
+\hline
+TC-PM-07 & Receipt data accuracy & Download receipt after payment & Correct name, amount, date, property & All fields matched correctly \\
+\hline
+TC-PM-08 & Admin real-time status update & Payment completed by citizen & Admin panel reflects paid status instantly & Real-time update confirmed \\
+\hline
+\end{tabular}
+\caption{Test Cases -- Payment and Receipt Module}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+ \begin{tabular}{| m{1.2cm} | m{3.5cm} | m{2.2cm}| m{3cm}|m{3cm}| } 
+\hline
+\multicolumn{3}{|l|}{NAME OF MODULE: Surveying / GIS Map}&
+\multicolumn{2}{|l|}{TESTING TOOL: Manual Browser + Leaflet.js Inspector}\\[0.8cm]
+\hline
+\textbf{Test ID} & \textbf{Test Description} & \textbf{Input Data} & \textbf{Expected Output} & \textbf{Actual Output} \\ 
+\hline
+TC-GIS-01 & Map loads with Jaipur coordinates & Open /dashboard/map & Map centred on Jaipur, all markers visible & Map loaded correctly \\
+\hline
+TC-GIS-02 & Paid property marker colour & Property with paid status & Green marker on map & Green marker displayed \\
+\hline
+TC-GIS-03 & Pending property marker colour & Property with pending status & Orange marker on map & Orange marker displayed \\
+\hline
+TC-GIS-04 & Search by property owner name & Search: Rajesh Kumar & Sidebar highlights property, map pans to location & Search worked correctly \\
+\hline
+TC-GIS-05 & Filter pending properties only & Click Pending filter & Only pending properties shown & Filter applied correctly \\
+\hline
+TC-GIS-06 & Filter paid properties only & Click Paid filter & Only paid properties shown & Filter applied correctly \\
+\hline
+TC-GIS-07 & Property popup on marker click & Click any map marker & Popup shows owner, zone, tax, status & Popup displayed correctly \\
+\hline
+TC-GIS-08 & Satellite view toggle & Click Satellite button & Map tiles switch to satellite imagery & Toggle worked correctly \\
+\hline
+TC-GIS-09 & Total property count accuracy & 21 properties in database & Header shows 21 Total & Count matched correctly \\
+\hline
+TC-GIS-10 & Map responsive on mobile & Open map on mobile browser & Map renders correctly, controls accessible & Responsive confirmed \\
+\hline
+\end{tabular}
+\caption{Test Cases -- GIS Map and Surveying Module}
+\end{center}
+\end{table}

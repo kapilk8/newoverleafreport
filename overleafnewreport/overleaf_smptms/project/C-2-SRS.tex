@@ -1,0 +1,68 @@
+\chapter{Software Requirement Specification}
+\section{Overall Description}
+\paragraph{}The Software Requirement Specification (SRS) for SMPTMS provides a comprehensive description of the system's functional and non-functional requirements. This section presents the system's overall context, including its product perspective, user types, constraints, and underlying assumptions. SMPTMS is a role-based web application designed for Jaipur Nagar Nigam that digitizes property tax management through a three-tier architecture comprising a Next.js frontend, Next.js API routes for business logic, and a Supabase PostgreSQL database.
+
+\subsection{Product Perspective}
+
+\subsubsection{System Interfaces}
+\paragraph{}SMPTMS integrates with three external systems. Supabase serves as the primary backend, handling all data storage, real-time updates, and authentication through a PostgreSQL database accessed via REST APIs over HTTPS. Razorpay processes all financial transactions through its payment gateway API, supporting both test mode (sandbox) and production mode for live deployments. Google Maps tile servers provide the base cartographic layer for the GIS map dashboard rendered through Leaflet.js. All communication between the frontend and these external services is conducted using JSON payloads over HTTPS connections, maintaining security and compatibility across environments.
+
+\subsubsection{User Interfaces}
+\paragraph{}The interface is divided into two clearly separated access paths based on user role. Citizens access a personal dashboard after authentication, displaying their registered properties, outstanding dues, payment history, and a form to register new properties. The design is responsive and fully functional on both mobile and desktop browsers. Admins access a dedicated administrative panel displaying a live GIS map of all properties across Jaipur, zone-wise analytics, a defaulter tracking list, zone configuration options for DLC rates, and exportable reports. Navigation is sidebar-based with clearly labelled sections requiring no technical expertise to operate.
+
+\subsubsection{Hardware Interfaces}
+\paragraph{}SMPTMS runs entirely on cloud infrastructure and requires no specialized or proprietary hardware. Any device equipped with a modern web browser and an active internet connection --- including smartphones, tablets, and desktop computers --- can access the full functionality of the system. The deployment is hosted on Vercel's edge network, ensuring low latency access from any location within India.
+
+\subsubsection{Software Interfaces}
+\paragraph{}The software interfaces used in SMPTMS are as follows:
+\begin{itemize}
+    \item \textbf{Frontend Framework:} Next.js 14 (App Router) with TypeScript
+    \item \textbf{Styling:} Tailwind CSS v3
+    \item \textbf{Backend / Database:} Supabase (PostgreSQL + Supabase Auth + Supabase Storage)
+    \item \textbf{GIS / Mapping:} Leaflet.js v1.9.4 with react-leaflet v4.2.1
+    \item \textbf{Payment Gateway:} Razorpay SDK (Node.js)
+    \item \textbf{Deployment Platform:} Vercel
+    \item \textbf{Runtime Environment:} Node.js v18+
+\end{itemize}
+
+\subsubsection{Functional Requirement}
+\paragraph{}The functional requirements of SMPTMS are defined as follows:
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{| m{2cm} | m{11cm} |}
+\hline
+\textbf{ID} & \textbf{Requirement} \\
+\hline
+FR-001 & Secure user registration and login with role-based access control (Citizen / Admin) via Supabase Auth \\
+\hline
+FR-002 & Citizen dashboard displaying registered property portfolio, outstanding dues, and payment history \\
+\hline
+FR-003 & CRUD operations for property records including plot number, area, zone, and land use type \\
+\hline
+FR-004 & Automated tax calculation using the formula: Tax = (Plot Area x DLC Rate) / 2000 \\
+\hline
+FR-005 & Online payment integration via Razorpay with webhook-based payment verification \\
+\hline
+FR-006 & Downloadable PDF receipt generation after successful payment \\
+\hline
+FR-007 & Admin GIS map showing all properties with colour-coded payment status markers \\
+\hline
+FR-008 & Admin defaulter list with ward-wise and zone-wise filtering \\
+\hline
+FR-009 & Zone-wise DLC rate configuration by admin \\
+\hline
+FR-010 & Exportable zone-wise and ward-wise tax collection reports \\
+\hline
+\end{tabular}
+\caption{Functional Requirements of SMPTMS}
+\end{center}
+\end{table}
+
+\subsubsection{User Characteristics}
+\paragraph{}Two types of users interact with the SMPTMS platform. Citizens include property owners ranging from individuals with basic smartphone usage skills to business operators managing multiple commercial assets. This group requires a simple, guided interface with minimal technical terminology and clear payment confirmation feedback. Admins are municipal staff members from Jaipur Nagar Nigam ward offices with moderate computer literacy. This group requires clearly labelled controls, visual status indicators, and easy access to reports without requiring database or coding knowledge.
+
+\subsubsection{Constraints}
+\paragraph{}The system must operate within free or low-cost infrastructure tiers, as it is developed for a government municipal context with limited IT budget. Internet connectivity in ward offices may be variable, so the frontend is optimized for fast initial load times on slower connections through Next.js server-side rendering and static generation where appropriate. All financial transactions must comply with Razorpay's integration standards and PCI-DSS guidelines applicable to the payment gateway layer.
+
+\subsubsection{Assumption and Dependencies}
+\paragraph{}It is assumed that Jaipur Nagar Nigam ward offices have access to at least basic computer hardware and a stable internet connection. The system's accuracy depends on correct DLC rate data being entered and maintained by authorized administrators. The platform depends on Supabase's uptime guarantees, Razorpay's payment gateway availability, and Vercel's hosting infrastructure. It is further assumed that property owners have valid identification and mobile numbers for Razorpay payment verification.

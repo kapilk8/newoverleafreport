@@ -1,0 +1,135 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage{titlesec}
+\titleformat{\chapter}[display]{\bfseries\Huge}{{Chapter} \thechaptertitlename\thechapter}{0pt}{\Huge}[{\titlerule[1.5]}]
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+
+\usepackage[top=0.70in, bottom=0.80in, left=0.8in,right=0.80in]{geometry}
+\usepackage[pdftex]{graphicx}
+\usepackage[bookmarks, colorlinks=false]{hyperref}
+\hypersetup{pdfborder = {0 0 0}}
+
+\usepackage[final]{pdfpages}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{pslatex}
+\usepackage{array}
+\usepackage{setspace}
+\usepackage{enumerate}
+\usepackage{longtable}
+\usepackage{lipsum}
+\usepackage[font=small,labelfont=bf]{caption}
+\def\figurename{\textbf{Figure }}
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+  language=Java,
+  basicstyle=\footnotesize,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{black},
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false,
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  escapeinside={\%*}{*)},
+  morekeywords={*,...}
+}
+
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{%
+\fancyfoot[L]{\emph{Department of Computer Science and Engineering(AI), SKIT, Jaipur}}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+}
+
+\pagestyle{fancy}
+\rhead{\emph{}}
+\fancyfoot[LO,LE]{\emph{Department of Computer Science and Engineering(AI), SKIT, Jaipur}}
+\cfoot{}
+\fancyfoot[RO, RE]{\thepage}
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage{pgf}
+\usepackage{pgfpages}
+\pgfpagesdeclarelayout{boxed}
+{
+  \edef\pgfpageoptionborder{0pt}
+}
+{
+  \pgfpagesphysicalpageoptions{logical pages=1}
+  \pgfpageslogicalpageoptions{1}
+  {
+    border code=\pgfsetlinewidth{2pt}\pgfstroke,
+    border shrink=\pgfpageoptionborder,
+    resized width=.95\pgfphysicalwidth,
+    resized height=.95\pgfphysicalheight,
+    center=\pgfpoint{.5\pgfphysicalwidth}{.5\pgfphysicalheight}
+  }
+}
+\pgfpagesuselayout{boxed}
+\setlength{\parindent}{1cm}
+
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+\renewcommand{\contentsname}{Table of Content}
+
+\begin{document}
+\renewcommand\bibname{References}
+\lhead{ }
+
+\pagenumbering{roman}
+\pagestyle{fancy}
+\newpage
+
+\input{project/cover}
+\input{project/Declaration}
+{\protect\thispagestyle{fancy}}
+\newpage
+\input{project/acknowledgements}
+{\protect\thispagestyle{fancy}}
+\newpage
+\input{project/abstract}
+{\protect\thispagestyle{fancy}}
+\newpage
+\cleardoublepage
+
+\tableofcontents
+
+\addtocontents{lof}{\protect\thispagestyle{fancy}}
+\listoffigures
+\listoftables
+\cleardoublepage
+\pagestyle{fancy}
+\pagenumbering{arabic}
+
+\input{project/C-1-introduction}
+\input{project/C-2-SRS}
+\input{project/C-3-System-design}
+\input{project/C-4-methodology}
+\input{project/C-5-Centering System Testing}
+\input{project/C-7-Project Screen Shots}
+\input{project/C-8-Conclusion and Future Scope}
+\input{project/C-9-SDG}
+\input{project/References}
+\input{project/ProjectPoster}
+\input{project/Certificate}
+\input{project/plagreport}
+\input{project/Githublink}
+
+\end{document}

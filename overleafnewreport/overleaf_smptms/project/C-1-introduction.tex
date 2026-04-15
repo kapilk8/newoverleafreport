@@ -1,0 +1,51 @@
+\chapter{Introduction}
+\section{Problem Statement and Objective}
+\paragraph{\large{\normalfont{
+India collects property tax equivalent to roughly 0.2\% of its GDP, significantly lower than developed nations such as the United States and Canada where property tax contributes 3--4\% of GDP. This gap directly impacts the quality of civic infrastructure, as Urban Local Bodies (ULBs) depend on property tax as a primary source of revenue for funding roads, sanitation, water supply, and other public services.
+
+In cities like Jaipur, the property tax administration process suffers from several systemic problems. Properties go unregistered for years due to the absence of an accessible digital registration mechanism. Tax assessments are inconsistent because they rely on outdated records and individual staff decisions. Citizens have no transparent method to verify how their tax amounts are calculated, leading to widespread distrust. Municipal staff spend considerable time chasing payments manually rather than focusing on productive revenue activities.
+
+The objective of this project is to build a digital platform that systematically eliminates these friction points. SMPTMS automates the entire tax cycle — property registration, assessment calculation, online payment, and receipt generation — and provides both citizens and municipal officials with a single, transparent, and accessible system to manage property tax without requiring physical office visits.
+}}}
+
+\section{Literature Survey / Market Survey}
+\paragraph{\large{\normalfont{
+Existing research on Urban Local Bodies across India consistently identifies three core problems in property tax administration. First, property records are outdated and disconnected from any digital or spatial mapping system. Second, tax calculation is inconsistent and heavily dependent on the discretion of individual municipal staff, creating opportunities for manipulation. Third, citizens distrust the system due to a lack of transparency in how amounts are determined, which reduces voluntary compliance.
+
+Several Indian cities have undertaken digitization efforts with measurable success. Pune's PCMC portal and Bengaluru's BBMP system have demonstrated that digital tax platforms genuinely improve compliance rates and reduce administrative burden. However, these solutions are expensive, developed for large metropolitan areas, and require significant technical expertise to maintain. Smaller municipalities like Jaipur's ward offices need something lighter, faster to deploy, and operable without specialized IT staff.
+
+International examples such as the UK's Valuation Office Agency digital portal and the US county-level GIS assessment systems further demonstrate that integrating spatial mapping with tax administration significantly improves property discovery, reduces undervaluation, and enables data-driven revenue planning. SMPTMS draws from these models to deliver a solution appropriate for the Jaipur context.
+}}}
+
+\section{Introduction to Project}
+\paragraph{\large{\normalfont{
+SMPTMS --- Smart Property Tax Management System --- is a full-stack web application designed for Jaipur Nagar Nigam that handles the complete lifecycle of property tax administration. The system provides two distinct user experiences: a citizen-facing portal and an administrative dashboard.
+
+Citizens interact through a personal dashboard where they can register properties by entering details such as plot number, area in square metres, zone, and land use type. The system automatically calculates the annual tax amount using a standardized formula based on the District Level Circle (DLC) rate applicable to the zone. After reviewing the computed amount, citizens can pay directly through an integrated Razorpay payment gateway and immediately download an official digital receipt.
+
+Administrators access a separate panel featuring a GIS-based property map built with Leaflet.js, showing all registered properties across Jaipur with colour-coded markers indicating payment status. The admin panel enables officials to track defaulters, approve property assessments, configure zone-wise DLC rates, and generate ward-wise or zone-wise reports. The system is deployed live at smptms.vercel.app and connected to a Supabase PostgreSQL backend containing real data from Jaipur's municipal zones.
+}}}
+
+\section{Proposed Logic / Algorithm / Business Plan / Solution}
+\paragraph{\large{\normalfont{
+The solution is structured around a straightforward end-to-end workflow. A property owner registers on the platform and submits property details including plot number, area in square metres, zone category, and land use type (residential, commercial, or industrial). The backend calculates annual tax automatically using the formula:
+
+\begin{center}
+\textbf{Annual Tax = (Plot Area \texttimes{} DLC Rate) / 2000}
+\end{center}
+
+The DLC rate is configured per zone by the admin and reflects the government's published District Level Circle rates for Jaipur. Once the tax amount is displayed, the citizen proceeds to payment through Razorpay's hosted checkout. On successful payment, Razorpay sends a webhook callback to the Next.js API server, which verifies the payment signature cryptographically before updating the property status in Supabase and generating a downloadable PDF receipt.
+
+On the administrative side, all registered properties are fetched from Supabase and rendered as markers on a Leaflet.js map centred on Jaipur coordinates. Green markers represent paid properties and orange markers represent pending ones. Admins can filter by ward, zone, or payment status, click any marker to view full property details, and export zone-wise tax reports for departmental use.
+
+The three-agent architecture separates the authentication module, tax calculation engine, and payment processing module into independent, maintainable units — making the system robust and easy to extend.
+}}}
+
+\section{Scope of the Project}
+\paragraph{\large{\normalfont{
+SMPTMS covers property tax administration specifically for Jaipur Nagar Nigam. The system's functional scope includes property registration, automated DLC-rate-based tax calculation, online payment processing via Razorpay, digital receipt generation, GIS-based property mapping with Leaflet.js, and administrative reporting with zone-wise and ward-wise filters.
+
+The current version does not cover other municipal revenue streams such as trade licenses, water bills, or building plan approvals. It is not intended to replace state-level platforms like Rajasthan's ULBHRMS but to function as a lightweight, accessible front-end layer that any ward office can operate without requiring specialized training or infrastructure investment.
+
+The platform is designed specifically for the Jaipur context, using real zone coordinates and DLC rates applicable to Jaipur Nagar Nigam's jurisdiction. Future iterations could extend the system to other Rajasthan municipalities with minimal configuration changes.
+}}}

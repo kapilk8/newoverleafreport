@@ -1,0 +1,142 @@
+\chapter{Methodology and Team}
+\section{Introduction to Agile Methodology}
+\paragraph{}
+Agile Methodology is an iterative project management approach that organizes development into short, repeating cycles called sprints. Rather than delivering a complete product at the end of a long development period, Agile teams deliver working increments regularly, allowing for continuous feedback, adaptation, and improvement throughout the project.
+
+For SMPTMS, Agile was adopted because the project involved four modules developed simultaneously by different team members, requiring tight coordination and frequent integration checks. The iterative approach allowed the team to adjust requirements and priorities based on testing outcomes at each sprint boundary.
+
+\paragraph{}The sequential phases in the Agile model as applied to SMPTMS are described below:
+\begin{enumerate}
+    \item \textbf{Requirement Gathering:} The team conducted an initial analysis of Jaipur Nagar Nigam's property tax pain points, reviewed similar municipal platforms (PCMC Pune, BBMP Bengaluru), and defined the functional and non-functional requirements documented in the SRS. Key requirements such as GIS map integration, Razorpay payment, and role-based access were identified and prioritized in this phase.
+    
+    \item \textbf{Design:} System architecture, database schema (Supabase PostgreSQL), API route structure (Next.js App Router), and high-level design diagrams (use case, activity, DFD, class, and sequence) were prepared. The three-tier architecture and module decomposition were finalized to enable parallel development across the four team modules.
+    
+    \item \textbf{Development (Coding):} Each team member developed their assigned module iteratively. Khushal Jangid built the authentication and user dashboard, Gaurav Pratap Singh implemented the tax calculation engine, Kapil Jarwal set up the testing infrastructure and deployment pipeline, and Himanshu Meena developed the GIS mapping and survey features. Weekly syncs ensured module compatibility.
+    
+    \item \textbf{Testing:} Unit testing, integration testing, and system testing were performed progressively. Postman was the primary API testing tool, supplemented by manual browser testing for UI flows. Test cases for all four modules are documented in Chapter 5.
+
+    \item \textbf{Deployment:} The application was deployed to Vercel's cloud platform with continuous deployment configured from the GitHub repository. Supabase provided the managed PostgreSQL backend and Razorpay was configured with both sandbox (test) and production credentials.
+
+    \item \textbf{Maintenance:} Post-deployment, the team monitored Vercel logs and Supabase query performance to resolve any runtime issues. Bug reports identified during final testing were tracked and resolved before the project report submission deadline.
+\end{enumerate}
+
+\section{Team Members, Roles \& Responsibilities}
+\begin{table}[H]
+\begin{center}
+ \begin{tabular}{| m{4cm} | m{2.5cm} | m{2.5cm}| m{5cm}| } 
+\hline
+\multicolumn{2}{|l|}{MEMBER 1: Khushal Jangid (22ESKCA057)}&
+\multicolumn{2}{|l|}{NAME OF MODULE: User Management}\\
+\hline
+\textbf{NAME OF FUNCTIONALITY} & \textbf{SOFT DEADLINE} & \textbf{HARD DEADLINE} & \textbf{DETAILS OF FUNCTIONALITY} \\ 
+\hline
+Setup \& Grid & 30/8/25 & 10/9/25 & React.js frontend, Node.js backend setup, login using Next Auth \\
+\hline
+Styling & 18/8/25 & 25/9/25 & Design UI for user authentication and profile management \\
+\hline
+Integration (Auth) & 20/9/25 & 10/10/25 & Implement JWT authentication, user dashboard to view profile \\
+\hline
+User Dashboard & 21/10/25 & 28/11/25 & Create User APIs for registration, login, and data handling \\
+\hline
+Backend API & 10/11/25 & 28/11/25 & Develop CRUD APIs with tax API and error handling \\
+\hline
+Tech Integration & 10/12/25 & 30/12/25 & Integrate user details with better UX and error handling \\
+\hline
+Final Adjustment & 30/1/26 & 20/1/26 & Polish frontend with module testing and documentation \\
+\hline
+Documentation & 28/2/26 & 20/2/26 & Conduct User Module Testing and Calculation \\
+\hline
+\end{tabular}
+\caption{Member-1 Roles and Responsibilities}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+ \begin{tabular}{| m{4cm} | m{2.5cm} | m{2.5cm}| m{5cm}| } 
+\hline
+\multicolumn{2}{|l|}{MEMBER 2: Gaurav Pratap Singh (22ESKCA035)}&
+\multicolumn{2}{|l|}{NAME OF MODULE: Tax Calculation}\\
+\hline
+\textbf{NAME OF FUNCTIONALITY} & \textbf{SOFT DEADLINE} & \textbf{HARD DEADLINE} & \textbf{DETAILS OF FUNCTIONALITY} \\ 
+\hline
+Schema Design & 28/8/25 & 30/8/25 & Design Supabase schema for tax records, property and income \\
+\hline
+Tax Data Entry Module & 20/9/25 & 25/9/25 & Create form for property entry and tax function \\
+\hline
+Tax Logic & 27/10/25 & 30/10/25 & Implement calculation logic: Tax = (Plot Area x DLC Rate) / 2000 \\
+\hline
+API Development & 25/11/25 & 30/11/25 & Build API routes for entries and data sync \\
+\hline
+Integration (Supabase) & 15/12/25 & 30/12/25 & Add input validation and tax reports \\
+\hline
+Error Handling & 10/1/26 & 15/1/26 & Auto-generate tax reports of non-compliant entries \\
+\hline
+Report Generation & 10/2/26 & 15/2/26 & Integrate tax reports with frontend dashboard \\
+\hline
+Final Integration & 23/2/26 & 15/3/26 & Final testing of Tax Calculation module \\
+\hline
+\end{tabular}
+\caption{Member-2 Roles and Responsibilities}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+ \begin{tabular}{| m{4cm} | m{2.5cm} | m{2.5cm}| m{5cm}| } 
+\hline
+\multicolumn{2}{|l|}{MEMBER 3: Kapil Jarwal (22ESKCA054)}&
+\multicolumn{2}{|l|}{NAME OF MODULE: Testing Module}\\
+\hline
+\textbf{NAME OF FUNCTIONALITY} & \textbf{SOFT DEADLINE} & \textbf{HARD DEADLINE} & \textbf{DETAILS OF FUNCTIONALITY} \\ 
+\hline
+Test Environment & 28/8/25 & 30/8/25 & Setup Postman and mock environment for API integration \\
+\hline
+Integration Testing & 20/9/25 & 25/9/25 & Design testing plan for APIs and automated test cases \\
+\hline
+Unit Testing Scripts & 21/10/25 & 27/10/25 & Create automated test cases for user and tax modules \\
+\hline
+API Testing & 25/11/25 & 30/12/25 & Testing all backend endpoints and integration points \\
+\hline
+Bug Report Sheet & 25/11/25 & 15/1/26 & Maintaining test results, deploy system on Vercel \\
+\hline
+Development Setup & 15/1/26 & 15/2/26 & Final test execution and environment validation \\
+\hline
+Final Testing & 28/2/26 & 15/3/26 & End-to-end system testing on live deployment \\
+\hline
+Documentation & -- & -- & Complete documentation of all test cases and results \\
+\hline
+\end{tabular}
+\caption{Member-3 Roles and Responsibilities}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+ \begin{tabular}{| m{4cm} | m{2.5cm} | m{2.5cm}| m{5cm}| } 
+\hline
+\multicolumn{2}{|l|}{MEMBER 4: Himanshu Meena (22ESKCA047)}&
+\multicolumn{2}{|l|}{NAME OF MODULE: Surveying / GIS}\\
+\hline
+\textbf{NAME OF FUNCTIONALITY} & \textbf{SOFT DEADLINE} & \textbf{HARD DEADLINE} & \textbf{DETAILS OF FUNCTIONALITY} \\ 
+\hline
+Land Survey Form & 2/8/25 & 12/8/25 & Survey form: Parcel ID, area, coordinates \\
+\hline
+Map Integration & 13/8/25 & 11/9/25 & Map integration with polygon boundary and document upload \\
+\hline
+Survey Data Upload & 1/9/25 & 10/10/25 & Document upload, version history, timeline of survey changes \\
+\hline
+Survey History Tracking & 1/10/25 & 15/11/25 & Admin dashboard for surveyed vs pending properties \\
+\hline
+Parcel Status Dashboard & 2/11/25 & 12/12/25 & Duplicate parcel detection and geo-conflict handling \\
+\hline
+Duplicate Parcel Detection & 1/1/26 & 10/1/26 & PDF reports with ward/zone-wise date filters \\
+\hline
+Survey Report Generation & 1/2/26 & 11/2/26 & Auto alerts via email/SMS on survey updates \\
+\hline
+Final Integration & 20/2/26 & 15/3/26 & Final GIS module testing and documentation \\
+\hline
+\end{tabular}
+\caption{Member-4 Roles and Responsibilities}
+\end{center}
+\end{table}
